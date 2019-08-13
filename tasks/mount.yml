@@ -21,6 +21,7 @@
     group: "{{ item.mount_group | d(disk_group) }}"
     state: directory
     mode: "{{ item.mount_mode |d(omit) }}"
+  when: item.mount is defined
   with_items: "{{ disk_devices }}"
   tags:
     - disk
