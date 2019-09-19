@@ -1,5 +1,6 @@
 ---
 - include: dependencies.yml
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version > '14'
 
 - name: Looking for Data disk
   stat: path="{{ item.disk }}"
