@@ -1,0 +1,31 @@
+---
+- name: nvme | ensure nvme-cli is present
+  package:
+    state: present
+    name: "nvme-cli"
+
+- name: nvme | ensure /usr/local/bin directory
+  file:
+    path: /usr/local/bin
+    state: directory
+
+- name: nvme | copy mapping script
+  copy:
+    src: ebs-nvme-mapping
+    dest: /usr/local/bin/ebs-nvme-mapping
+    owner: root
+    group: root
+    mode: 0755
+
+- name: nvme | copy udev script
+  copy:
+    src: 999-aws-ebs-nvme.rules
+    dest: /etc/udev/rules.d/999-aws-ebs-nvme.rules
+    owner: root
+    group: root
+    mode: 0644
+
+- name: nvme | run mapping script
+  command: /usr/local/bin/ebs-nvme-mapping
+  args:
+    creates: /var/opt/ebs-nvme-mapping
