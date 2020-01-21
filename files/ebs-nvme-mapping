@@ -7,5 +7,5 @@ for blkdev in $( nvme list | awk '/^\/dev/ { print $1 }' ) ; do
   if [[ "$mapping" == "/dev/" ]]; then
 	  continue
   fi
-  ( test -b "${blkdev}" && test -L "${mapping}" ) || echo ln -fs "${blkdev}" "${mapping}"
+  ( test -b "${blkdev}" && test -L "${mapping}" ) || ln -fs "${blkdev}" "${mapping}"
 done
