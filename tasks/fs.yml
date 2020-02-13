@@ -1,4 +1,12 @@
 ---
+- name: Installing xfs
+  package:
+    name: xfsprogs
+    state: latest
+  with_items: "{{ disk_devices }}"
+  when: item.fs_type == "xfs"
+  ignore_errors: yes
+
 - name: Creating filesystem in partition
   filesystem:
     dev: "{{ item.device }}"
