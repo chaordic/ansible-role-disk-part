@@ -1,0 +1,12 @@
+---
+
+# On old releases nvme-cli is not available so using a new field
+# called id to get the first ephemeral disk based on disk id.
+# The problem is that the disk id have a random number in the end
+# so using shell to solve this for us.
+- shell:
+    cmd: "ln -sf {{item.id}} {{item.disk}}"
+    warn: false
+  when: item.id is defined
+  with_items:
+    - "{{ disk_devices }}"
