@@ -1,4 +1,7 @@
 ---
+- include: manual_link.yml
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version <= '14'
+
 - include: dependencies.yml
   when: not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version <= '14')
 
