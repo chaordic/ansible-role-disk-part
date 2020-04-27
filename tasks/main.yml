@@ -1,8 +1,8 @@
 ---
-- include: manual_link.yml
+- include_tasks: manual_link.yml
   when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version <= '14'
 
-- include: dependencies.yml
+- include_tasks: dependencies.yml
   when: not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version <= '14')
 
 - name: Looking for Data disk
@@ -15,7 +15,7 @@
 - debug: msg="{{disk_devices}}"
 
 - name: Starting partition configuration
-  include: partition.yml
+  include_tasks: partition.yml
   when: ret_stat_disk is defined
   with_items:
     - "{{ ret_stat_disk.results }}"
@@ -23,7 +23,7 @@
     loop_var: item_disk_devices
 
 - name: Setup LVOL
-  include: lvm.yml
+  include_tasks: lvm.yml
   when:
     - disk_lvol is defined
     - not ansible_check_mode
@@ -33,5 +33,5 @@
     loop_var: item_disk_lvol
   register: ret_setup_lvm
 
-- include: fs.yml
-- include: mount.yml
+- import_tasks: fs.yml
+- import_tasks: mount.yml
