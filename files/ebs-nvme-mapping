@@ -9,5 +9,5 @@ for blkdev in $( nvme list | awk '/^\/dev/ { print $1 }' ) ; do
   fi
   dev_prefix="/dev/"
   mapping=${mapping/#$dev_prefix} #remove /dev/ prefix if present
-  ( test -b "${blkdev}" && test -L "${mapping}" ) || ln -fs "${blkdev}" "${dev_prefix}${mapping}"
+  ( test -b "${blkdev}" && test -L "${dev_prefix}${mapping}" ) || ln -fs "${blkdev}" "${dev_prefix}${mapping}"
 done
