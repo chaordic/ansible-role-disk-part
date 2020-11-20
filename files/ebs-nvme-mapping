@@ -2,10 +2,14 @@
 
 PATH="${PATH}:/usr/sbin"
 
+EPH_ID=0
+
 for blkdev in $( nvme list | awk '/^\/dev/ { print $1 }' ) ; do
   mapping="/dev/$(nvme id-ctrl --raw-binary "${blkdev}" 2> /dev/null| cut -c3073-3104 | tr -s ' ' | sed 's/ $//g')"
   if [[ "$mapping" == "/dev/" ]]; then
-	  continue
+      # ephemeral disk
+      mapping="/dev/ephemeral${EPH_ID}"
+      EPH_ID=(EPH_ID+1)
   fi
   dev_prefix="/dev/"
   mapping=${mapping/#$dev_prefix} #remove /dev/ prefix if present
